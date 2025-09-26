@@ -1,0 +1,426 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paws & Hearts - Street Animal Rescue</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🐾 Paws & Hearts</h1>
+                </div>
+                <nav class="nav" id="mainNav">
+                    <ul class="nav-list">
+                        <li><a href="#" onclick="showSection('home')">Home</a></li>
+                        <li><a href="#" onclick="showSection('adoption')">Adopt</a></li>
+                        <li><a href="#" onclick="showSection('videos')">Pet Care</a></li>
+                        <li><a href="#" onclick="showSection('donate')">Donate</a></li>
+                        <li><a href="#" onclick="showSection('about')">About</a></li>
+                        <li class="auth-nav">
+                            <span id="userWelcome" class="hidden"></span>
+                            <button id="loginBtn" class="btn btn--primary btn--sm">Login</button>
+                            <button id="logoutBtn" class="btn btn--outline btn--sm hidden">Logout</button>
+                        </li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div class="modal hidden" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="authTitle">Login</h3>
+                <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe"> Remember me
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                    <div class="auth-links">
+                        <a href="#" onclick="showSignupForm()">Don't have an account? Sign up</a>
+                    </div>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="signupPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Sign Up</button>
+                    <div class="auth-links">
+                        <a href="#" onclick="showLoginForm()">Already have an account? Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home/Landing Section -->
+        <section id="homeSection" class="section">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Saving Lives, One Paw at a Time</h1>
+                        <p>Join us in rescuing and caring for street animals across India. Every donation, adoption, and volunteer hour makes a difference.</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn--primary btn--lg" onclick="showSection('adoption')">Adopt Now</button>
+                            <button class="btn btn--outline btn--lg" onclick="showSection('donate')">Donate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-section">
+                <div class="container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Animals Rescued</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Animals Adopted</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Active Volunteers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">₹ 1245</div>
+                            <div class="stat-label">Funds Raised</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="section hidden">
+            <div class="container">
+                <div class="dashboard-welcome">
+                    <h2>Welcome back, <span id="dashboardUserName"></span>!</h2>
+                    <p>Thank you for being part of our mission to help street animals.</p>
+                </div>
+                
+                <div class="quote-section">
+                    <div class="quote-card">
+                        <div class="quote-text" id="currentQuote"></div>
+                        <div class="quote-controls">
+                            <button class="btn btn--secondary btn--sm" onclick="previousQuote()">← Previous</button>
+                            <button class="btn btn--secondary btn--sm" onclick="nextQuote()">Next →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-stats">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Animals Rescued</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Animals Adopted</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Active Volunteers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">₹ 1245</div>
+                            <div class="stat-label">Funds Raised</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pet Adoption Section -->
+        <section id="adoptionSection" class="section hidden">
+            <div class="container">
+                <h2>Find Your Perfect Companion</h2>
+                <p>Give a loving home to animals in need</p>
+                
+                <div class="filters">
+                    <select class="form-control" id="speciesFilter" onchange="filterPets()">
+                        <option value="">All Species</option>
+                        <option value="Dog">Dogs</option>
+                        <option value="Cat">Cats</option>
+                    </select>
+                    <select class="form-control" id="ageFilter" onchange="filterPets()">
+                        <option value="">All Ages</option>
+                        <option value="6 months">6 months</option>
+                        <option value="1 year">1 year</option>
+                        <option value="2 years">2 years</option>
+                        <option value="3 years">3+ years</option>
+                    </select>
+                    <select class="form-control" id="sizeFilter" onchange="filterPets()">
+                        <option value="">All Sizes</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+
+                <div class="pets-grid" id="petsGrid">
+                    <!-- Pet cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Pet Care Videos Section -->
+        <section id="videosSection" class="section hidden">
+            <div class="container">
+                <h2>Pet Care Education</h2>
+                <p>Learn how to care for your pets with our educational videos</p>
+                
+                <div class="video-categories">
+                    <button class="btn btn--secondary category-btn active" onclick="filterVideos('')">All</button>
+                    <button class="btn btn--secondary category-btn" onclick="filterVideos('Basic Care')">Basic Care</button>
+                    <button class="btn btn--secondary category-btn" onclick="filterVideos('First Aid')">First Aid</button>
+                    <button class="btn btn--secondary category-btn" onclick="filterVideos('Nutrition')">Nutrition</button>
+                    <button class="btn btn--secondary category-btn" onclick="filterVideos('Grooming')">Grooming</button>
+                </div>
+
+                <div class="videos-grid" id="videosGrid">
+                    <!-- Video cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Donation Section -->
+        <section id="donateSection" class="section hidden">
+            <div class="container">
+                <h2>Support Our Mission</h2>
+                <p>Your donation helps us rescue, treat, and care for street animals</p>
+                
+                <div class="donation-content">
+                    <div class="donation-form-container">
+                        <form id="donationForm" class="donation-form">
+                            <h3>Choose Donation Amount</h3>
+                            <div class="amount-presets">
+                                <button type="button" class="amount-btn" data-amount="50">₹50</button>
+                                <button type="button" class="amount-btn" data-amount="100">₹100</button>
+                                <button type="button" class="amount-btn" data-amount="200">₹200</button>
+                                <button type="button" class="amount-btn" data-amount="500">₹500</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Custom Amount (₹)</label>
+                                <input type="number" class="form-control" id="customAmount" min="" placeholder="Enter amount">
+                            </div>
+                            
+                            <h3>Payment Method</h3>
+                            <div class="payment-methods">
+                                <label class="payment-option">
+                                    <input type="radio" name="paymentMethod" value="UPI" checked>
+                                    <span>UPI</span>
+                                </label>
+                               </label>
+                            </div>
+
+                            <h3>Donor Information</h3>
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="donorName" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="donorEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="donorPhone" required>
+                            </div>
+
+                            <button type="submit" class="btn btn--primary btn--full-width btn--lg">Donate Now</button>
+                        </form>
+                    </div>
+                    
+                    <div class="donation-info">
+                        <div class="fundraising-goal">
+                            <h3>Current Goal: ₹1,00,000</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 25%"></div>
+                            </div>
+                            <p>₹ 1245 raised so far</p>
+                        </div>
+                        
+                        <div class="donation-impact">
+                            <h3>Your Impact</h3>
+                            <ul>
+                                <li>₹50 - Provides food for 5 animals for a week</li>
+                                <li>₹100 - Basic medical checkup for 2 animals</li>
+                                <li>₹200 - Vaccination for 4 animals</li>
+                                <li>₹500 - Emergency surgery for 1 animal</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="aboutSection" class="section hidden">
+            <div class="container">
+                <h2>About Paws & Hearts</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Founded in 2025, Paws & Hearts is a non-profit organization dedicated to rescuing, rehabilitating, and rehoming street animals across India. Our mission is to create a world where every animal is treated with compassion and respect.</p>
+                        <p>We work tirelessly to provide medical care, shelter, and love to animals in need. Through our adoption programs, educational initiatives, and community outreach, we've helped thousands of animals find their forever homes.</p>
+                        <h3>Our Values</h3>
+                        <ul>
+                            <li>Compassion for all living beings</li>
+                            <li>Commitment to animal welfare</li>
+                            <li>Community engagement and education</li>
+                            <li>Transparency in all our operations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pet Details Modal -->
+    <div class="modal hidden" id="petModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="petModalName"></h3>
+                <button class="modal-close" onclick="closeModal('petModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="pet-details">
+                    <div class="pet-image">
+                        <img id="petModalImage" src="" alt="">
+                    </div>
+                    <div class="pet-info">
+                        <div class="pet-stats">
+                            <span class="pet-stat"><strong>Species:</strong> <span id="petModalSpecies"></span></span>
+                            <span class="pet-stat"><strong>Breed:</strong> <span id="petModalBreed"></span></span>
+                            <span class="pet-stat"><strong>Age:</strong> <span id="petModalAge"></span></span>
+                            <span class="pet-stat"><strong>Gender:</strong> <span id="petModalGender"></span></span>
+                            <span class="pet-stat"><strong>Size:</strong> <span id="petModalSize"></span></span>
+                            <span class="pet-stat"><strong>Health:</strong> <span id="petModalHealth"></span></span>
+                            <span class="pet-stat"><strong>Location:</strong> <span id="petModalLocation"></span></span>
+                        </div>
+                        <p id="petModalDescription"></p>
+                        <button class="btn btn--primary btn--lg" onclick="showAdoptionForm()">Apply for Adoption</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adoption Form Modal -->
+    <div class="modal hidden" id="adoptionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adoption Application</h3>
+                <button class="modal-close" onclick="closeModal('adoptionModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="adoptionForm">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Why do you want to adopt this pet?</label>
+                        <textarea class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>📧 pranavkangutkar.xc@gmail.com</p>
+                    <p>📞 +91 9420448269</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="showSection('adoption')">Adopt</a></li>
+                        <li><a href="#" onclick="showSection('donate')">Donate</a></li>
+                        <li><a href="#" onclick="showSection('videos')">Pet Care</a></li>
+                        <li><a href="#" onclick="showSection('about')">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" target="_blank">ⓕ Facebook</a>
+                        <a href="#" target="_blank">🅾 Instagram</a>
+                        <a href="#" target="_blank">𝕏 Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Paws & Hearts. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
