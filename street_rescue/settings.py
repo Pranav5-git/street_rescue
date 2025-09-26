@@ -26,7 +26,12 @@ SECRET_KEY = 'django-insecure-o#)(yk7wc4uioys@it5!g5@&1k0m^o97%rc3@tufhc*peh7_8t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'street-rescue.onrender.com',  # Add your Render domain
+    'localhost',                   # (Optional, for local development)
+    '127.0.0.1',                   # (Optional, for local development)
+]
+
 
 
 # Application definition
