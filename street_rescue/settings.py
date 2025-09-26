@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-o#)(yk7wc4uioys@it5!g5@&1k0m^o97%rc3@tufhc*peh7_8t
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'street_rescue.onrender.com',
+    'street-rescue.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
