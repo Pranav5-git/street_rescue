@@ -31,7 +31,10 @@ ALLOWED_HOSTS = [
     'localhost',                   # (Optional, for local development)
     '127.0.0.1',                   # (Optional, for local development)
 ]
+<<<<<<< HEAD
 
+=======
+>>>>>>> b982bfeded6697d4e9e08b4bce0c92ba5ab204fd
 
 
 # Application definition
